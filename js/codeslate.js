@@ -1,612 +1,522 @@
+function writeJson(content) {
+  var data = JSON.stringify(content, null, 2);
 
-
-function writeJson(content){
-
-	var data = JSON.stringify(content,null,2);
-
-	fs.writeFile(jsonFilePath,data,function(e){
-
-		if(e){
-			alert("restart snippets please");
-		}
-
-	});
- 
-
-} 
-
-function writeJsonTheme(content){
-
-	var data = JSON.stringify(content,null,2);
-
-	fs.writeFile(jsonThemeFilePath,data,function(e){
-
-		if(e){
-			alert("restart snippets please");
-		}
-
-	});
-
+  fs.writeFile(jsonFilePath, data, function (e) {
+    if (e) {
+      alert('restart snippets please');
+    }
+  });
 }
 
-function push(theFileAddress){
+function writeJsonTheme(content) {
+  var data = JSON.stringify(content, null, 2);
 
-	console.log("push function has worked");
-
-	openedFiles.push(theFileAddress);
+  fs.writeFile(jsonThemeFilePath, data, function (e) {
+    if (e) {
+      alert('restart snippets please');
+    }
+  });
 }
 
-function pop(fileTabId){
-	var fileToPop = $("#"+fileTabId).attr("fileaddress");
-	var index = openedFiles.indexOf(fileToPop);
+function push(theFileAddress) {
+  //console.log("push function has worked");
 
-	openedFiles.splice(index,1);
-	
+  openedFiles.push(theFileAddress);
 }
 
-function universalFileOpener(theFileAddress){
-	//this check is done in order to ensure that one file is appended only once in the
-	//file container
+function pop(fileTabId) {
+  var fileToPop = $('#' + fileTabId).attr('fileaddress');
+  var index = openedFiles.indexOf(fileToPop);
 
-	console.log(theFileAddress);
-
-	if(thisIsTheFirstFile(theFileAddress)){
-		filePath = theFileAddress;
-
-		push(theFileAddress);
-
-		savingAllowed = true;
-
-		mode = getFileExtension(filePath).toLowerCase();
-		
-		currentFileName = getFileName(filePath);
-
-		//modify the title bar in the file
-		modifyTitleBar(currentFileName);
-		
-		//increases fileTabCount and puts the file in the explorer with the fileaddress provided from here
-		appendFileInFileContainer(filePath);
-
-		//responsible for the look and feel that tabs are being selected and new file also has fileselected class
-		detectNewlyOpenedFile(fileTabCount);
-
-		//reads the selected file and then sets it in the editor
-		readFile(filePath);
-		
-		//opens the respective code slate for each tab
-		openNewCodeSlate(fileTabCount,filePath);
-
-	}else{
-
-	}
-		
+  openedFiles.splice(index, 1);
 }
 
+function universalFileOpener(theFileAddress) {
+  //this check is done in order to ensure that one file is appended only once in the
+  //file container
 
-function openNewFile(){
-	
-	function openFileArg(fileNames){
-		
-		universalFileOpener(fileNames[0]);
-		filePath = fileNames[0];
+  //console.log(theFileAddress);
 
+  if (thisIsTheFirstFile(theFileAddress)) {
+    filePath = theFileAddress;
 
-	}
-	
-	dialog.showOpenDialog(openFileArg);
+    push(theFileAddress);
 
+    savingAllowed = true;
+
+    mode = getFileExtension(filePath).toLowerCase();
+
+    currentFileName = getFileName(filePath);
+
+    //modify the title bar in the file
+    modifyTitleBar(currentFileName);
+
+    //increases fileTabCount and puts the file in the explorer with the fileaddress provided from here
+    appendFileInFileContainer(filePath);
+
+    //responsible for the look and feel that tabs are being selected and new file also has fileselected class
+    detectNewlyOpenedFile(fileTabCount);
+
+    //reads the selected file and then sets it in the editor
+    readFile(filePath);
+
+    //opens the respective code slate for each tab
+    openNewCodeSlate(fileTabCount, filePath);
+  } else {
+  }
 }
 
+function openNewFile() {
+  function openFileArg(fileNames) {
+    universalFileOpener(fileNames[0]);
+    filePath = fileNames[0];
+  }
 
-
-function displayCustomThemeBlock(){
-
-	console.log("making custom theme here");
+  dialog.showOpenDialog(openFileArg);
 }
 
-
-
-function parseMode(mode){
-	
-	if(mode==="js"){
-	   mode = "javascript";
-	}
-	if(mode==="ts"){
-		mode = "typescript";
-	}
-	if(mode==="py"){
-		mode = "python"
-	}
-
-	return mode;
+function displayCustomThemeBlock() {
+  //console.log("making custom theme here");
 }
 
-function getFileName(argName){
-	//console.log("get file name");
-	var intermediate = argName.split('\\');
-	return intermediate[ intermediate.length - 1 ];
+function parseMode(mode) {
+  if (mode === 'js') {
+    mode = 'javascript';
+  }
+  if (mode === 'ts') {
+    mode = 'typescript';
+  }
+  if (mode === 'py') {
+    mode = 'python';
+  }
+
+  return mode;
 }
 
-function getFileExtension(argName){
-	
-	var fileName = getFileName(argName);
-	var ext = fileName.split(".");
-	
-	return ext[ext.length-1];
+function getFileName(argName) {
+  //console.log("get file name");
+  var intermediate = argName.split('\\');
+  return intermediate[intermediate.length - 1];
 }
 
+function getFileExtension(argName) {
+  var fileName = getFileName(argName);
+  var ext = fileName.split('.');
 
-function createNewFile(){
-	
-	mode = "txt";
-	$(".editorContainer div[id^='codeslate_']").css("display","block");
-	$(".editorContainer div[id^='codestat']").css("display","block");
-	savingAllowed = true;
-	
-	//adds new tab and sets the fileaddress to null in the explorer
-	addNewExplorerTabInFilesContainer();
-	//opens new coding screen
-	openCodeSlate(fileTabCount);
-	
-	detectNewlyOpenedFile(fileTabCount);
-
-	populateTitleText();
-	
+  return ext[ext.length - 1];
 }
 
+function createNewFile() {
+  mode = 'txt';
+  $(".editorContainer div[id^='codeslate_']").css('display', 'block');
+  $(".editorContainer div[id^='codestat']").css('display', 'block');
+  savingAllowed = true;
 
+  //adds new tab and sets the fileaddress to null in the explorer
+  addNewExplorerTabInFilesContainer();
+  //opens new coding screen
+  openCodeSlate(fileTabCount);
 
-function modifyTitleBar(fileName){
+  detectNewlyOpenedFile(fileTabCount);
 
-	var fileNameComponent = document.getElementById("currentFileName");
-    /* if condition fulfills           if                                then                                   else        */
-	fileNameComponent.innerHTML = (openedTabs>0) ? (fileNameComponent.innerHTML = fileName + " - ") : (fileNameComponent.innerHTML = fileName);
-
+  populateTitleText();
 }
 
-
-function showShortcuts(){
-
-
-	const modalPath = path.join('file://',__dirname,'shortcutWindow.html');
-	let win = new BrowserWindow({ width:800, height:200, minHeight:100, minWidth:600, frame:true });
-	win.on("close",function(){
-		win=null;
-	});
-
-	win.loadURL(modalPath);
-	win.show();
-
-
+function modifyTitleBar(fileName) {
+  var fileNameComponent = document.getElementById('currentFileName');
+  /* if condition fulfills           if                                then                                   else        */
+  fileNameComponent.innerHTML =
+    openedTabs > 0
+      ? (fileNameComponent.innerHTML = fileName + ' - ')
+      : (fileNameComponent.innerHTML = fileName);
 }
 
+function showShortcuts() {
+  const modalPath = path.join('file://', __dirname, 'shortcutWindow.html');
+  let win = new BrowserWindow({
+    width: 800,
+    height: 200,
+    minHeight: 100,
+    minWidth: 600,
+    frame: true,
+  });
+  win.on('close', function () {
+    win = null;
+  });
 
-function settings(theme){
-
-
-	const modalPath = path.join('file://',__dirname,'settings.html'+'#'+theme);
-	let win = new BrowserWindow({ width:800, height:550, minHeight:300, minWidth:550, maxWidth:800, maxHeight:800, frame:false });
-	win.on("close",function(){
-		win=null;
-	});
-
-	win.loadURL(modalPath);
-	win.show();
-
-
+  win.loadURL(modalPath);
+  win.show();
 }
 
+function settings(theme) {
+  const modalPath = path.join('file://', __dirname, 'settings.html' + '#' + theme);
+  let win = new BrowserWindow({
+    width: 800,
+    height: 550,
+    minHeight: 300,
+    minWidth: 550,
+    maxWidth: 800,
+    maxHeight: 800,
+    frame: false,
+  });
+  win.on('close', function () {
+    win = null;
+  });
+
+  win.loadURL(modalPath);
+  win.show();
+}
 
 //so I am going to show you how to work when there isomething to work with
 
 //so this is a video that I now recorded in mp4 and it seems like this is  a fair choice
 
-
-
 //now i am going to select folders
 
+function selectFolder() {
+  dialog.showOpenDialog(
+    {
+      properties: ['openDirectory'],
+    },
+    function (dir, e) {
+      if (dir !== undefined) {
+        $('.exploredFilesContainer').html('');
 
+        var selectedDirectory = dir[0];
 
-function selectFolder(){
+        directoryPath = selectedDirectory;
 
-dialog.showOpenDialog({
+        readDirectoryAt(selectedDirectory);
 
-    	properties: ['openDirectory']
+        $('#folderName').html(getFileName(selectedDirectory));
 
-  		}, function(dir,e){
-  			if(dir!==undefined){
+        fileObj.directoryPath = selectedDirectory;
 
-  			$(".exploredFilesContainer").html("");
-
-  			var selectedDirectory = dir[0];	
-
-  			directoryPath = selectedDirectory;
-
-  			readDirectoryAt(selectedDirectory);
-
-  			$("#folderName").html(getFileName(selectedDirectory));
-
-  			fileObj.directoryPath = selectedDirectory;
-
-  			writeJson(fileObj);
-
-  			}else{
-  			
-  			}
-
-});
-
-
+        writeJson(fileObj);
+      } else {
+      }
+    },
+  );
 }
 
-
-function syncFiles(){
-
-	$(".exploredFilesContainer").html("");
-	readDirectoryAt(directoryPath);
-
-
+function syncFiles() {
+  $('.exploredFilesContainer').html('');
+  readDirectoryAt(directoryPath);
 }
 
+function readDirectoryAt(selectedDirectory) {
+  var i;
 
-function readDirectoryAt(selectedDirectory){
-	
-	var i;	
+  fs.readdir(selectedDirectory, function (err, dir) {
+    for (i = 0; i < dir.length; i++) {
+      var folderFileAddress = selectedDirectory + '\\' + dir[i];
 
-	
-	fs.readdir(selectedDirectory, function(err,dir){
+      currentFileName = getFileName(folderFileAddress);
 
-  			 
-        	for(i=0; i<dir.length; i++){
+      mode = getFileExtension(folderFileAddress).toLowerCase();
 
-        		var folderFileAddress = selectedDirectory+"\\"+dir[i];
-			
-
-        		currentFileName = getFileName(folderFileAddress);
-
-        		mode = getFileExtension(folderFileAddress).toLowerCase();
-
-				appendFileInExploredContainer(folderFileAddress);
-		
-        	}
-
-			
-		
-		});
-
+      appendFileInExploredContainer(folderFileAddress);
+    }
+  });
 }
-
 
 //debug the add new explporer tab
 
-function addNewExplorerTabInFilesContainer(){
+function addNewExplorerTabInFilesContainer() {
+  fileTabCount++;
+  openedTabs++;
+  untitledCount++;
 
-	fileTabCount++;
-	openedTabs++;
-	untitledCount++;
-	
-	var tabId = "tabId_"+fileTabCount;
-	var fileAddress = "null";
-	var fileName = "Untitled - "+untitledCount;
-	
-	
-	$(".filesContainer").append("<li>"+returnListDesign(tabId,fileAddress,fileName,false)+"</li>");
-	
-	filePath = fileAddress;
-	
+  var tabId = 'tabId_' + fileTabCount;
+  var fileAddress = 'null';
+  var fileName = 'Untitled - ' + untitledCount;
+
+  $('.filesContainer').append(
+    '<li>' + returnListDesign(tabId, fileAddress, fileName, false) + '</li>',
+  );
+
+  filePath = fileAddress;
 }
 
- 
+function returnListDesign(tabId, fileAddress, fileName, fileSaved) {
+  var des =
+    "<span onclick='closeTab(" +
+    tabId +
+    ")' class='closeTabIcon'>X</span>" +
+    "<div id='" +
+    tabId +
+    "' fileaddress='" +
+    fileAddress +
+    "' class='filenameSpan'  onclick='toggleCodingScreensFromFilesContainer(id);'>" +
+    fileName;
+  des += updateFileSave(fileSaved);
 
-
-function returnListDesign(tabId, fileAddress, fileName, fileSaved){
-
- var des =	"<span onclick='closeTab("+tabId+")' class='closeTabIcon'>X</span>" +
-	"<div id='"+tabId+"' fileaddress='"+fileAddress+"' class='filenameSpan'  onclick='toggleCodingScreensFromFilesContainer(id);'>"+fileName ; 
-	des += updateFileSave(fileSaved); 
-	
-	
- return des;
-	
+  return des;
 }
 
+function returnExplorerDesign(tabId, fileAddress, fileName) {
+  var closingTabId = tabId;
+  var des;
+  var symbolId = 'symbol_' + numberReturner(tabId);
 
-function returnExplorerDesign(tabId, fileAddress, fileName){
+  var functionToCall = '';
 
-var closingTabId = tabId;
-var des;
-var symbolId = "symbol_"+numberReturner(tabId);
+  var ext = getFileExtension(fileAddress);
+  var symbol = '';
 
-var functionToCall = '';
+  if (ext === fileName) {
+    //when its a folder
+    functionToCall = 'openFolder(id)';
+    symbol = "<div class='symbol folderClosed' id='" + symbolId + "'></div>";
+  } else {
+    //when its  a file
+    functionToCall = desiredFunctions(ext);
+    symbol = "<div class='symbol fileSymbol' id='" + symbolId + "'></div>";
+  }
 
-var ext = getFileExtension(fileAddress);
-var symbol = '';
+  des = "<div id='" + tabId + "' fileaddress='" + fileAddress + "' class='filenameSpan'";
+  des += "oncontextmenu='contextMenuForExploredContainer(event,id);'";
+  des +=
+    'onclick=' +
+    functionToCall +
+    '>' +
+    symbol +
+    "<span id='" +
+    tabId +
+    "_fileName'>" +
+    fileName +
+    '</span>';
 
-if(ext===fileName){
-	//when its a folder
-	functionToCall = 'openFolder(id)';
-	symbol = "<div class='symbol folderClosed' id='"+symbolId+"'></div>";
-
-}else{
-
-	//when its  a file
-	functionToCall = desiredFunctions(ext);
-	symbol = "<div class='symbol fileSymbol' id='"+symbolId+"'></div>";
+  return des;
 }
 
-des ="<div id='"+tabId+"' fileaddress='"+fileAddress+"' class='filenameSpan'";
-des += "oncontextmenu='contextMenuForExploredContainer(event,id);'";
-des += "onclick="+functionToCall+">"+symbol+"<span id='"+tabId+"_fileName'>"+fileName+"</span>";
+function openFolder(id) {
+  var listElement = $('#' + id);
 
-return des;
+  var subId = 'subId_' + numberReturner(id);
+  var address = listElement.attr('fileaddress');
+  var symbolId = 'symbol_' + numberReturner(id);
 
+  $('#' + subId).html('');
+  $('#' + subId).toggleClass('opened');
 
+  if ($('#' + subId).hasClass('opened')) {
+    $('#' + symbolId).removeClass('folderClosed');
+    $('#' + symbolId).addClass('folderOpen');
+  } else if (!$('#' + subId).hasClass('opened')) {
+    $('#' + symbolId).removeClass('folderOpen');
+    $('#' + symbolId).addClass('folderClosed');
+  }
+
+  fs.readdir(address, function (err, dir) {
+    for (i = 0; i < dir.length; i++) {
+      var folderFileAddress = address + '\\' + dir[i];
+
+      currentFileName = getFileName(folderFileAddress);
+
+      mode = getFileExtension(folderFileAddress).toLowerCase();
+
+      appendFileInSubfileContainer(folderFileAddress, subId);
+    }
+  });
 }
 
+function desiredFunctions(ext) {
+  switch (ext.toLowerCase()) {
+    case 'html':
+    case 'css':
+    case 'txt':
+    case 'php':
+    case 'json':
+    case 'js':
+    case 'php':
+    case 'py':
+    case 'xml':
+    case 'ts':
+    case 'cpp':
+    case 'java':
+    case 'dart':
+      return 'toggleCodingScreensFromExplorerContainer(id)';
 
-function openFolder(id){
+    case 'png':
+    case 'PNG':
+    case 'JPG':
+    case 'jpg':
+    case 'jpeg':
+    case 'JPEG':
+    case 'psd':
+    case 'gif':
+    case 'webp':
+      return 'togglePictureViewFromExplorerContainer(id)';
 
-	var listElement = $("#"+id);
-
-	var subId = "subId_"+numberReturner(id);
-	var address = listElement.attr("fileaddress");
-	var symbolId = "symbol_"+numberReturner(id);
-
-	$("#"+subId).html("");
-	$("#"+subId).toggleClass("opened");
-
-	if($("#"+subId).hasClass("opened")){
-
-		$("#"+symbolId).removeClass("folderClosed");
-		$("#"+symbolId).addClass("folderOpen");
-
-	}else if(!$("#"+subId).hasClass("opened")){
-
-		$("#"+symbolId).removeClass("folderOpen");
-		$("#"+symbolId).addClass("folderClosed");
-
-	}
-
-	fs.readdir(address,function(err,dir){
-
-
-			for(i=0; i<dir.length; i++){
-
-        		var folderFileAddress = address+"\\"+dir[i];
-			
-				currentFileName = getFileName(folderFileAddress);
-
-        		mode = getFileExtension(folderFileAddress).toLowerCase();
-
-				appendFileInSubfileContainer(folderFileAddress,subId);
-		
-        	}
-
-	});
-
+    case 'mp4':
+    case 'flv':
+    case 'mkv':
+      return 'toggleVideoViewFromExplorerContainer(id)';
+  }
 }
 
+function updateFileSave(fileSaved) {
+  var statement;
 
-function desiredFunctions(ext){
+  if (fileSaved) {
+    statement = "<div class='writeIndicator' style='opacity:0;'></div></div>";
+  } else {
+    statement = "<div class='writeIndicator' style='opacity:1;'></div></div>";
+  }
 
-	switch(ext.toLowerCase()){
-
-		case "html":case "css":case "txt": case "php": case "json":case"js":
-		case "php":case "py":case "xml":case "ts": case "cpp": case"java": case "dart":
-		return 'toggleCodingScreensFromExplorerContainer(id)';
-		
-		case "png":case "PNG":case "JPG":case "jpg": case"jpeg": case "JPEG":case "psd":
-		case "gif":
-		case "webp":
-		return 'togglePictureViewFromExplorerContainer(id)';
-
-		case "mp4":case "flv":case "mkv":
-		return 'toggleVideoViewFromExplorerContainer(id)';
-		
-		
-	}
-
+  return statement;
 }
 
+function toggleCodingScreensFromFilesContainer(explorerTabId) {
+  var tabNumber = numberReturner(explorerTabId);
 
+  toggleCodeSlate(tabNumber);
 
+  deselectAllFiles();
 
+  selectedTabId = explorerTabId;
 
-function updateFileSave(fileSaved){
-	
-	var statement;
-	
-	if(fileSaved){
-		 
-	 statement = "<div class='writeIndicator' style='opacity:0;'></div></div>";
-		 
-	 }
-	else{
-		
-	 statement = "<div class='writeIndicator' style='opacity:1;'></div></div>";	
-		
-	 }
-	
-	return statement;
-	
+  $('.filesContainer #' + explorerTabId)
+    .parent()
+    .addClass('selectedFile');
+
+  populateTitleText();
 }
 
-
-
-
-function toggleCodingScreensFromFilesContainer(explorerTabId){
-
-			var tabNumber = numberReturner(explorerTabId);
-	
-			toggleCodeSlate(tabNumber);
-		
-			deselectAllFiles();
-
-			selectedTabId = explorerTabId;
-
-			$(".filesContainer #"+explorerTabId).parent().addClass("selectedFile");
-	
-			populateTitleText();
-}
-
-
-function thisIsTheFirstFile(currentFileAddress){
-	var check = true;
-	for(var i=0; i<=openedFiles.length; i++){
-
-		if(currentFileAddress == openedFiles[i]){
-			check = false;
-			break;
-			
-		}
-	}
-	return check;
+function thisIsTheFirstFile(currentFileAddress) {
+  var check = true;
+  for (var i = 0; i <= openedFiles.length; i++) {
+    if (currentFileAddress == openedFiles[i]) {
+      check = false;
+      break;
+    }
+  }
+  return check;
 }
 
 //toggling coding screens from explorer container
-function toggleCodingScreensFromExplorerContainer(explorerTabId){
-		
-		//check whether the current file is already in the filecontainer or not
-		
-			var tabNumber = numberReturner(explorerTabId);
-			var currentFileAddress = $("#"+explorerTabId).attr("fileaddress");
+function toggleCodingScreensFromExplorerContainer(explorerTabId) {
+  //check whether the current file is already in the filecontainer or not
 
-			universalFileOpener(currentFileAddress);
-		
+  var tabNumber = numberReturner(explorerTabId);
+  var currentFileAddress = $('#' + explorerTabId).attr('fileaddress');
+
+  universalFileOpener(currentFileAddress);
 }
 
+function togglePictureViewFromExplorerContainer(explorerTabId) {
+  var fileaddress = $('#' + explorerTabId).attr('fileaddress');
+  var tabNumber = numberReturner(explorerTabId);
 
+  openPictureView(tabNumber, fileaddress);
 
+  toggleScreens('imageSlate_' + tabNumber);
 
-function togglePictureViewFromExplorerContainer(explorerTabId){
+  deselectAllFilesInExplorer();
 
-	var fileaddress = $("#"+explorerTabId).attr("fileaddress");
-	var tabNumber = numberReturner(explorerTabId);
+  selectedTabId = explorerTabId;
 
-			openPictureView(tabNumber, fileaddress);
-			
-			toggleScreens("imageSlate_"+tabNumber);
-
-			deselectAllFilesInExplorer();
-
-			selectedTabId = explorerTabId;
-
-			populateTitleText();
-
+  populateTitleText();
 }
 
-function toggleVideoViewFromExplorerContainer(explorerTabId){
+function toggleVideoViewFromExplorerContainer(explorerTabId) {
+  var fileaddress = $('#' + explorerTabId).attr('fileaddress');
+  var tabNumber = numberReturner(explorerTabId);
 
-	var fileaddress = $("#"+explorerTabId).attr("fileaddress");
-	var tabNumber = numberReturner(explorerTabId);
+  openVideoView(tabNumber, fileaddress);
 
-			openVideoView(tabNumber, fileaddress);
-		
-			toggleScreens("videoSlate_"+tabNumber);
+  toggleScreens('videoSlate_' + tabNumber);
 
+  deselectAllFilesInExplorer();
 
-			deselectAllFilesInExplorer();
+  selectedTabId = explorerTabId;
 
-			selectedTabId = explorerTabId;
-
-			populateTitleText();
+  populateTitleText();
 }
 
-
-
-function numberReturner(id){
-	return id.split("_")[1];
+function numberReturner(id) {
+  return id.split('_')[1];
 }
 
-function toggleCodeSlate(tabNumber){
-	
-	hideContentFromContainer();
-	
-	var codeslateId = "codeslate_"+tabNumber;
-	var codestatId = "codestat_"+tabNumber;
-	
-	$("#"+codeslateId).css("display","block");
-	$("#"+codestatId).css("display","block");
-	 
-	findEditor(codeslateId);
+function toggleCodeSlate(tabNumber) {
+  hideContentFromContainer();
 
+  var codeslateId = 'codeslate_' + tabNumber;
+  var codestatId = 'codestat_' + tabNumber;
+
+  $('#' + codeslateId).css('display', 'block');
+  $('#' + codestatId).css('display', 'block');
+
+  findEditor(codeslateId);
 }
 
-function toggleScreens(element){
+function toggleScreens(element) {
+  hideContentFromContainer();
 
-	hideContentFromContainer();
-
-	$("#"+element).css("display","block");
-
-
+  $('#' + element).css('display', 'block');
 }
 
-function hideContentFromContainer(){
-
-
-	$(".editorContainer div[id^='codeslate_']").css("display","none");
-	$(".editorContainer div[id^='codestat_']").css("display","none");
-	$(".editorContainer div[id^='imageSlate_']").css("display","none");
-	$(".editorContainer div[id^='videoSlate_']").css("display","none");
-
+function hideContentFromContainer() {
+  $(".editorContainer div[id^='codeslate_']").css('display', 'none');
+  $(".editorContainer div[id^='codestat_']").css('display', 'none');
+  $(".editorContainer div[id^='imageSlate_']").css('display', 'none');
+  $(".editorContainer div[id^='videoSlate_']").css('display', 'none');
 }
 
-function closeCurrentTab(){
-	//for current tab..
+function closeCurrentTab() {
+  //for current tab..
 
-	var currentTabNumber = numberReturner(selectedTabId);
+  var currentTabNumber = numberReturner(selectedTabId);
 
-	if(currentTabNumber!=1) currentTabNumber--;
+  if (currentTabNumber != 1) currentTabNumber--;
 
-	var closingTabId = selectedTabId;
+  var closingTabId = selectedTabId;
 
-	selectedTabId = "tabId_"+currentTabNumber;
+  selectedTabId = 'tabId_' + currentTabNumber;
 
-	toggleCodingScreensFromFilesContainer(selectedTabId);
+  toggleCodingScreensFromFilesContainer(selectedTabId);
 
-	closeTabLogic(closingTabId);
-
-
+  closeTabLogic(closingTabId);
 }
 
-function closeTab(tabtoClose){
-	
-	var closingTabId = tabtoClose.id;
+function closeTab(tabtoClose) {
+  var closingTabId = tabtoClose.id;
 
-	var currentTabNumber = numberReturner(selectedTabId);
+  var currentTabNumber = numberReturner(selectedTabId);
 
-	if(currentTabNumber!=1) currentTabNumber--;
+  if (currentTabNumber != 1) currentTabNumber--;
 
-	selectedTabId = "tabId_"+currentTabNumber;
+  selectedTabId = 'tabId_' + currentTabNumber;
 
-	toggleCodingScreensFromFilesContainer(selectedTabId);
-	
-	closeTabLogic(closingTabId);
-} 
+  toggleCodingScreensFromFilesContainer(selectedTabId);
 
-function closeTabLogic(closingTabId){
-
-	if(fileTabCount>0){      
-		var relevantCodingSlateId = "codeslate_"+numberReturner(closingTabId);
-		var relevantCodingStatId = "codestat_"+numberReturner(closingTabId);
-		
-		$("#"+relevantCodingSlateId).css("display","none");
-		$("#"+relevantCodingStatId).css("display","none");
-		
-		$("#"+closingTabId).parent().hide();
-		--openedTabs;
-			
-	}	
-		populateTitleText();
-		 pop(closingTabId);
-
-		 checkIfThereAreNoMoreTabsLeft();
+  closeTabLogic(closingTabId);
 }
 
-function checkIfThereAreNoMoreTabsLeft(){
-	if(openedTabs==0){
-		modifyTitleBar(" ");
-	 }
+function closeTabLogic(closingTabId) {
+  if (fileTabCount > 0) {
+    var relevantCodingSlateId = 'codeslate_' + numberReturner(closingTabId);
+    var relevantCodingStatId = 'codestat_' + numberReturner(closingTabId);
+
+    $('#' + relevantCodingSlateId).css('display', 'none');
+    $('#' + relevantCodingStatId).css('display', 'none');
+
+    $('#' + closingTabId)
+      .parent()
+      .hide();
+    --openedTabs;
+  }
+  populateTitleText();
+  pop(closingTabId);
+
+  checkIfThereAreNoMoreTabsLeft();
+}
+
+function checkIfThereAreNoMoreTabsLeft() {
+  if (openedTabs == 0) {
+    modifyTitleBar(' ');
+  }
 }
 
 /*
@@ -616,653 +526,542 @@ function checkIfThereAreNoMoreTabsLeft(){
 
 
 	*/
-function codeSlate(tabNumber){
+function codeSlate(tabNumber) {
+  editorId = 'codeslate_' + tabNumber;
+  codestatId = 'codestat_' + tabNumber;
 
-	editorId = "codeslate_"+tabNumber;
-	codestatId = "codestat_"+tabNumber;
-	
-	var editorDesign = "<div class='codeslate' id='"+editorId+"' style='"+editorStyles+"'></div>";
-	
-	var codeStatContent = "<div class='currentLang'>"+parseMode(mode)+"</div>";
-	
-	editorDesign+="<div class='codeStat' id='"+codestatId+"'> "+codeStatContent+" </div>";
-	
-	$(".editorContainer").append(editorDesign);
-	
-	
-	if(tabNumber>1){
-	   
-		hideContentFromContainer();
-		
-	 }
-	
-	
-	$("#"+editorId).css("display","block");
-	$("#"+codestatId).css("display","block");
-	
+  var editorDesign =
+    "<div class='codeslate' id='" + editorId + "' style='" + editorStyles + "'></div>";
 
+  var codeStatContent = "<div class='currentLang'>" + parseMode(mode) + '</div>';
+
+  editorDesign += "<div class='codeStat' id='" + codestatId + "'> " + codeStatContent + ' </div>';
+
+  $('.editorContainer').append(editorDesign);
+
+  if (tabNumber > 1) {
+    hideContentFromContainer();
+  }
+
+  $('#' + editorId).css('display', 'block');
+  $('#' + codestatId).css('display', 'block');
 }
 
+function openCodeSlate(tabNumber) {
+  //whenever a new file is created, ctrl-N
 
-function openCodeSlate(tabNumber){
-	
-	//whenever a new file is created, ctrl-N
-	
-	codeSlate(tabNumber);
-	findEditor(editorId);
+  codeSlate(tabNumber);
+  findEditor(editorId);
 }
 
-function openPictureView(tabNumber,src){
-	
-	var imageContainer = "imageSlate_"+tabNumber;
-	
-	var viewDesign = "<div class='imageContainer' id='"+imageContainer+"'><img class='browsedImage' src='"+src+"'></div>";
-	
-	$(".editorContainer").append(viewDesign);
-	
+function openPictureView(tabNumber, src) {
+  var imageContainer = 'imageSlate_' + tabNumber;
+
+  var viewDesign =
+    "<div class='imageContainer' id='" +
+    imageContainer +
+    "'><img class='browsedImage' src='" +
+    src +
+    "'></div>";
+
+  $('.editorContainer').append(viewDesign);
 }
 
-function openVideoView(tabNumber,src){
-	
-	var videoContainer = "videoSlate_"+tabNumber;
-	var videoExt = getFileExtension(src);
-	
+function openVideoView(tabNumber, src) {
+  var videoContainer = 'videoSlate_' + tabNumber;
+  var videoExt = getFileExtension(src);
 
-	var videoSettings = "<video class='videoProp' controls autoplay>";
-  	videoSettings	  +=  "<source src='"+src+"' type='video/"+videoExt+"'>";
+  var videoSettings = "<video class='videoProp' controls autoplay>";
+  videoSettings += "<source src='" + src + "' type='video/" + videoExt + "'>";
 
-	var viewDesign = "<div class='videoContainer' id='"+videoContainer+"'>"+videoSettings+"</div>";
-	
-	$(".editorContainer").append(viewDesign);
-	
+  var viewDesign =
+    "<div class='videoContainer' id='" + videoContainer + "'>" + videoSettings + '</div>';
+
+  $('.editorContainer').append(viewDesign);
 }
 
+function openNewCodeSlate(tabNumber, filePath) {
+  //whenever a new file is opened, ctrl-O
 
+  //console.log("opening a new code slate");
 
+  codeSlate(tabNumber);
+  var fileExt = getFileExtension(filePath);
 
-function openNewCodeSlate(tabNumber,filePath){
-	
-	//whenever a new file is opened, ctrl-O
-	
-	//console.log("opening a new code slate");
-
-	codeSlate(tabNumber);
-	var fileExt = getFileExtension(filePath);
-	
-	//console.log("finding the editor through opencodeslate");
-	findEditor(editorId,fileExt);
+  //console.log("finding the editor through opencodeslate");
+  findEditor(editorId, fileExt);
 }
 
+function detectNewlyOpenedFile(getId) {
+  deselectAllFiles();
 
+  var newTabId = 'tabId_' + getId;
+  var newTabAddress = $('#' + newTabId).attr('fileaddress');
+  var selectedTabAddress = $('#' + selectedTabId).attr('fileaddress');
 
-function detectNewlyOpenedFile(getId){
-	
-	deselectAllFiles();
-	
-	var newTabId = "tabId_"+getId;
-	var newTabAddress = $("#"+newTabId).attr("fileaddress");
-	var selectedTabAddress = $("#"+selectedTabId).attr("fileaddress");
-	
-		$("#"+newTabId).parent().addClass("selectedFile");
-		selectedTabId = newTabId;
-	
+  $('#' + newTabId)
+    .parent()
+    .addClass('selectedFile');
+  selectedTabId = newTabId;
 }
 
-function detectNewlyOpenedFileInExplorer(getId){
+function detectNewlyOpenedFileInExplorer(getId) {
+  deselectAllFilesInExplorer();
 
-	deselectAllFilesInExplorer();
-	
-	var newTabId = "tabId_"+getId;
-	
-	$("#"+newTabId).parent().addClass("selectedFile");
-	
-	selectedTabId = newTabId;
+  var newTabId = 'tabId_' + getId;
 
+  $('#' + newTabId)
+    .parent()
+    .addClass('selectedFile');
+
+  selectedTabId = newTabId;
 }
 
-
-function deselectAllFilesInExplorer(){
-
-	if($(".explorerContainer li").hasClass("selectedFile")){
-		
-	$(".explorerContainer li").removeClass("selectedFile");
-		
-	}
-
+function deselectAllFilesInExplorer() {
+  if ($('.explorerContainer li').hasClass('selectedFile')) {
+    $('.explorerContainer li').removeClass('selectedFile');
+  }
 }
 
-function deselectAllFiles(element){
-	
-	if($(".filesContainer li").hasClass("selectedFile")){
-		
-	$(".filesContainer li").removeClass("selectedFile");
-		
-	}
+function deselectAllFiles(element) {
+  if ($('.filesContainer li').hasClass('selectedFile')) {
+    $('.filesContainer li').removeClass('selectedFile');
+  }
 }
 
+function appendFileInFileContainer(fileAddress) {
+  //console.log("appending the files in explorer");
+  fileTabCount++;
+  openedTabs++;
 
+  //jsonContent.fileTabCount = fileTabCount;
 
-function appendFileInFileContainer(fileAddress){
-	//console.log("appending the files in explorer");
-	fileTabCount++;
-	openedTabs++;
-	
-	//jsonContent.fileTabCount = fileTabCount;
-	
-	//writeJson(jsonContent);
-	
-	var tabId = "tabId_"+fileTabCount;
-	var fileName = currentFileName;
-	var fileAdd = fileAddress;
-	
-	$(".filesContainer").append("<li>"+returnListDesign(tabId, fileAdd, fileName,true)+"</li>");
-	
-	
-};
+  //writeJson(jsonContent);
 
+  var tabId = 'tabId_' + fileTabCount;
+  var fileName = currentFileName;
+  var fileAdd = fileAddress;
 
+  $('.filesContainer').append('<li>' + returnListDesign(tabId, fileAdd, fileName, true) + '</li>');
+}
 
-function appendFileInExploredContainer(fileAddress){
-	//console.log("appending the files in explorer");
-	explorerTabCount++;
-	
-	
-	var tabId = "explorerTabId_"+explorerTabCount;
-	var subId = "subId_"+explorerTabCount;
-	var fileName = currentFileName;
-	var fileAdd = fileAddress;
+function appendFileInExploredContainer(fileAddress) {
+  //console.log("appending the files in explorer");
+  explorerTabCount++;
 
-	
-	$(".exploredFilesContainer").append("<li>"+returnExplorerDesign(tabId, fileAdd, fileName)+"</li> <div class='subFileContainer' id='"+subId+"'></div>");
-	
+  var tabId = 'explorerTabId_' + explorerTabCount;
+  var subId = 'subId_' + explorerTabCount;
+  var fileName = currentFileName;
+  var fileAdd = fileAddress;
 
-	
-};
+  $('.exploredFilesContainer').append(
+    '<li>' +
+      returnExplorerDesign(tabId, fileAdd, fileName) +
+      "</li> <div class='subFileContainer' id='" +
+      subId +
+      "'></div>",
+  );
+}
 
+function appendFileInSubfileContainer(fileAddress, subId) {
+  //console.log("appending the files in explorer");
+  explorerTabCount++;
 
-function appendFileInSubfileContainer(fileAddress,subId){
-	//console.log("appending the files in explorer");
-	explorerTabCount++;
-	
-	
-	var tabId = "tabId_"+explorerTabCount;
-	var furtherSubId = "subId_"+explorerTabCount;
-	var fileName = currentFileName;
-	var fileAdd = fileAddress;
+  var tabId = 'tabId_' + explorerTabCount;
+  var furtherSubId = 'subId_' + explorerTabCount;
+  var fileName = currentFileName;
+  var fileAdd = fileAddress;
 
-	
-	
-	$("#"+subId).append("<li>"+returnExplorerDesign(tabId, fileAdd, fileName)+"</li> <div class='subFileContainer' id='"+furtherSubId+"'></div>");
-	
-
-	
-};
+  $('#' + subId).append(
+    '<li>' +
+      returnExplorerDesign(tabId, fileAdd, fileName) +
+      "</li> <div class='subFileContainer' id='" +
+      furtherSubId +
+      "'></div>",
+  );
+}
 
 var menuOpen = false;
-var menu = $("#contextMenu");
+var menu = $('#contextMenu');
 var contextLi;
 
-function contextMenuForExploredContainer(e,id,symbol){
-	
-	var currentfileaddress = $("#"+id).attr("fileaddress");
+function contextMenuForExploredContainer(e, id, symbol) {
+  var currentfileaddress = $('#' + id).attr('fileaddress');
 
-	contextMenuProp(e);
+  contextMenuProp(e);
 
-	contextLi = $("#"+id).parent();
+  contextLi = $('#' + id).parent();
 
-	$(contextLi).addClass("contextSelected");
+  $(contextLi).addClass('contextSelected');
 
-	var folder = $(".folderFiles");
+  var folder = $('.folderFiles');
 
-	menu.append("<li id='deletefile_"+id+"' address='"+currentfileaddress+"' onclick='deleteCurrentFile(id)'>Delete File</li>");
-	menu.append("<li id='renamefile_"+id+"' address='"+currentfileaddress+"' onclick='renameCurrentFile(id)'>Rename File</li>");
-
+  menu.append(
+    "<li id='deletefile_" +
+      id +
+      "' address='" +
+      currentfileaddress +
+      "' onclick='deleteCurrentFile(id)'>Delete File</li>",
+  );
+  menu.append(
+    "<li id='renamefile_" +
+      id +
+      "' address='" +
+      currentfileaddress +
+      "' onclick='renameCurrentFile(id)'>Rename File</li>",
+  );
 }
 
+function contextMenuForEditor(e, id) {
+  contextMenuProp(e);
 
-function contextMenuForEditor(e,id){
-
-	contextMenuProp(e);
-
-	menu.append("<li onclick='copyFileAddress(id)'>Copy File Address</li>");
-	menu.append("<li onclick='copyFileAddress(id)'>Copy File Address</li>");
-	menu.append("<li onclick='copyFileAddress(id)'>Copy File Address</li>");
-	menu.append("<li onclick='copyFileAddress(id)'>Copy File Address</li>");
-	menu.append("<li class='separator'></li>");
-	menu.append("<li onclick='copyFileAddress(id)'>Copy File Address</li>");
-	menu.append("<li onclick='copyFileAddress(id)'>Copy File Address</li>");
-
+  menu.append("<li onclick='copyFileAddress(id)'>Copy File Address</li>");
+  menu.append("<li onclick='copyFileAddress(id)'>Copy File Address</li>");
+  menu.append("<li onclick='copyFileAddress(id)'>Copy File Address</li>");
+  menu.append("<li onclick='copyFileAddress(id)'>Copy File Address</li>");
+  menu.append("<li class='separator'></li>");
+  menu.append("<li onclick='copyFileAddress(id)'>Copy File Address</li>");
+  menu.append("<li onclick='copyFileAddress(id)'>Copy File Address</li>");
 }
 
+function contextMenuProp(e) {
+  /******** menu properties ********/
+  var ypos;
+  if (e.clientY > 555) {
+    ypos = e.clientY - menu.height();
+  } else {
+    ypos = e.clientY;
+  }
+  menu.css({
+    top: ypos + 'px',
+    left: e.clientX + 'px',
+  });
 
-function contextMenuProp(e){
+  menu.html('');
 
-	/******** menu properties ********/
-	var ypos;
-	if(e.clientY>555){
-		ypos = e.clientY-menu.height();
-	}else{
-		ypos = e.clientY;
-	}
-	menu.css({
-		top:ypos+"px",
-		left:e.clientX+"px"
-	});
-
-	menu.html("");
-
-	menuOpen = true;
-	menu.show();
-
+  menuOpen = true;
+  menu.show();
 }
 
-
-function hideMenu(menu){
-	if(menuOpen){
-		menu.hide();
-		$(contextLi).removeClass("contextSelected");
-	}
-
+function hideMenu(menu) {
+  if (menuOpen) {
+    menu.hide();
+    $(contextLi).removeClass('contextSelected');
+  }
 }
 
+function deleteCurrentFile(fileId) {
+  var addressOfFileToBeDeleted = $('#' + fileId).attr('address');
+  var split = fileId.split('_');
 
-function deleteCurrentFile(fileId){
-	
-	var addressOfFileToBeDeleted = $("#"+fileId).attr("address");
-	var split = fileId.split("_");
+  var tabId = split[1] + '_' + split[2];
 
-	var tabId = split[1]+"_"+split[2];
+  fs.unlink(addressOfFileToBeDeleted, (err) => {
+    if (err) throw err;
 
-	fs.unlink(addressOfFileToBeDeleted, (err) => {
-  		if (err) throw err;
-  		
-  		$("#"+tabId).fadeOut("fast");
-
-	});
-
+    $('#' + tabId).fadeOut('fast');
+  });
 }
 
+function renameCurrentFile(fileId) {
+  var addressOfFileToBeRenamed = $('#' + fileId).attr('address');
 
-function renameCurrentFile(fileId){
-	
-	var addressOfFileToBeRenamed = $("#"+fileId).attr("address");
+  var fileName = getFileName(addressOfFileToBeRenamed);
 
-	var fileName = getFileName(addressOfFileToBeRenamed);
+  var split = fileId.split('_');
 
-	var split = fileId.split("_");
-	
-	var tabId = split[1]+"_"+split[2];
+  var tabId = split[1] + '_' + split[2];
 
-	$("#renameFileContainer").css("display","block");
-	$("#renameInput").focus();
+  $('#renameFileContainer').css('display', 'block');
+  $('#renameInput').focus();
 
-	$(document).on("keydown",function(e){
-		if(e.keyCode===13){
-			//renamefile
-	
-		var newName = $("#renameInput").val();
-		
-		var newAddress = addressOfFileToBeRenamed.replace(fileName,newName);
+  $(document).on('keydown', function (e) {
+    if (e.keyCode === 13) {
+      //renamefile
 
-		$("#"+tabId).attr("fileaddress",newAddress);
-		$("#"+tabId+"_fileName").html(newName);
+      var newName = $('#renameInput').val();
 
+      var newAddress = addressOfFileToBeRenamed.replace(fileName, newName);
 
+      $('#' + tabId).attr('fileaddress', newAddress);
+      $('#' + tabId + '_fileName').html(newName);
 
-			fs.rename(addressOfFileToBeRenamed, newAddress, (err) => {
-  			if (err) throw err;
- 			 	
-			});
+      fs.rename(addressOfFileToBeRenamed, newAddress, (err) => {
+        if (err) throw err;
+      });
 
-			$("#renameFileContainer").css("display","none");
-
-		}
-
-	});
-
-}
-
-
-function fileExplorerListAnimation(){
-	//animates the list while loading a file
-
-	$(".exploredFilesContainer").css({
-		"opacity":0
-	});
-	$(".exploredFilesContainer").animate({
-		"opacity":1
-	},850);
-
-}
-
-function readFile(filePath){
-//console.log("reading file");
-
- fs.readFile(filePath,'utf-8',function(e,data){
-	//console.log("fs read called");
-	editor.setValue(data);
-	
-});
- 
-};
-																					
-
-
-
-function saveFile(){
-	
-	if(savingAllowed){
-	
-		if(filePath == 'null'){	
-			showSaveDialogAndSaveFile();
-		}else{
-
-			saveFileWithoutDialog();
-		}
-		
-	}
-
-}
-
-
-function showSaveDialogAndSaveFile(){
-	
-	function saveFileArg(currentFileAddress){
-		
-		if(currentFileAddress === undefined){
-		//alert("File name is undefined");
-		return;						 
-		}
-		
-		var content = editor.getValue();
-		
-		fs.writeFile(currentFileAddress, content, function(e){
-			
-			if(e){
-				
-			  alert("An error occured while saving the file");
-				fileSaved = false;
-				updateFileSave();
-				
-			}
-			else{
-				
-				var tabIdNum = numberReturner(editor.container.id);
-				
-				var tabId = "tabId_"+tabIdNum;
-				
-				var currentFileName = getFileName(currentFileAddress);
-				
-				$("#"+tabId).parent().html(returnListDesign(tabId, currentFileAddress, currentFileName,true));
-				
-				populateTitleText();
-				
-				filePath = currentFileAddress;
-				fileSaved = true;
-				updateFileSave();
-				
-				var fileExt = getFileExtension(currentFileAddress);
-	
-				push(filePath);
-
-				mode = parseMode(fileExt);
-				
-				//todo : update the ui aftr detecting the extension and then colour code the editor
-				codeSlate(tabIdNum);
-				
-
-				savedFiles.push(currentFileAddress);
-				
-				//jsonContent.savedFiles = savedFiles;
-				
-				//writeJson(jsonContent);
-				
-				findEditor(editorId,fileExt);
-				
-			}
-		});
-		
-
-		
-	}
-	
-	dialog.showSaveDialog(saveFileArg);
-	
-	
-}
-
-function populateTitleText(){
-	modifyTitleBar($("#"+selectedTabId).text());
-	console.log($("#"+selectedTabId).text());
-}
-
-function saveFileWithoutDialog(){
-	if(savingAllowed){
-	var content = editor.getValue();
-	
-	var tabIdNum = numberReturner(editor.container.id);
-				
-	var tabId = "tabId_"+tabIdNum;
-	
-	fs.writeFile(filePath, content, (err) => {
-
-    if (err) {
-        alert("An error ocurred updating the file" + err.message);
-        console.log(err);
-		fileSaved = false;
-		updateFileSave();
-		
-        return;
-		
+      $('#renameFileContainer').css('display', 'none');
     }
-		var opacity = $("#"+tabId+" .writeIndicator");
-	
-		opacity.css("opacity",0);
-		fileSaved = true;
-  		updateFileSave();
-		
-		var fileExt = getFileExtension(filePath);
-	
-		mode = parseMode(fileExt);
-		
-	
-	});
-
-	}
+  });
 }
 
+function fileExplorerListAnimation() {
+  //animates the list while loading a file
 
-function toggleWidgets(){
-
-	if(widgetsShown){
-		$(".widgetsContainer").css("display","none");
-		$("#widgetCheckbox").attr("checked","true");	
-	}else{
-		$(".widgetsContainer").css("display","block");	
-		$("#widgetCheckbox").attr("unchecked","false");	
-	}
-	
-
-
-	widgetsShown = !widgetsShown;
-
+  $('.exploredFilesContainer').css({
+    opacity: 0,
+  });
+  $('.exploredFilesContainer').animate(
+    {
+      opacity: 1,
+    },
+    850,
+  );
 }
 
+function readFile(filePath) {
+  //console.log("reading file");
 
-function hideExplorer(){
-	
-	
-	
-	if(!explorerHidden){
-		
-	$("#resizableExplorer").animate({
-		width:"2px"
-	},90);
-	
-		explorerHidden = true;
-		
-	}else{
-		
-	$("#resizableExplorer").animate({
-		width:"215px"
-	},90);
-		
-		explorerHidden = false;
-		
-	}
-	
-	
+  fs.readFile(filePath, 'utf-8', function (e, data) {
+    //console.log("fs read called");
+    editor.setValue(data);
+  });
 }
 
+function saveFile() {
+  if (savingAllowed) {
+    if (filePath == 'null') {
+      showSaveDialogAndSaveFile();
+    } else {
+      saveFileWithoutDialog();
+    }
+  }
+}
 
+function showSaveDialogAndSaveFile() {
+  function saveFileArg(currentFileAddress) {
+    if (currentFileAddress === undefined) {
+      //alert("File name is undefined");
+      return;
+    }
 
+    var content = editor.getValue();
+
+    fs.writeFile(currentFileAddress, content, function (e) {
+      if (e) {
+        alert('An error occured while saving the file');
+        fileSaved = false;
+        updateFileSave();
+      } else {
+        var tabIdNum = numberReturner(editor.container.id);
+
+        var tabId = 'tabId_' + tabIdNum;
+
+        var currentFileName = getFileName(currentFileAddress);
+
+        $('#' + tabId)
+          .parent()
+          .html(returnListDesign(tabId, currentFileAddress, currentFileName, true));
+
+        populateTitleText();
+
+        filePath = currentFileAddress;
+        fileSaved = true;
+        updateFileSave();
+
+        var fileExt = getFileExtension(currentFileAddress);
+
+        push(filePath);
+
+        mode = parseMode(fileExt);
+
+        //todo : update the ui aftr detecting the extension and then colour code the editor
+        codeSlate(tabIdNum);
+
+        savedFiles.push(currentFileAddress);
+
+        //jsonContent.savedFiles = savedFiles;
+
+        //writeJson(jsonContent);
+
+        findEditor(editorId, fileExt);
+      }
+    });
+  }
+
+  dialog.showSaveDialog(saveFileArg);
+}
+
+function populateTitleText() {
+  modifyTitleBar($('#' + selectedTabId).text());
+  //console.log($("#"+selectedTabId).text());
+}
+
+function saveFileWithoutDialog() {
+  if (savingAllowed) {
+    var content = editor.getValue();
+
+    var tabIdNum = numberReturner(editor.container.id);
+
+    var tabId = 'tabId_' + tabIdNum;
+
+    fs.writeFile(filePath, content, (err) => {
+      if (err) {
+        alert('An error ocurred updating the file' + err.message);
+        //console.log(err);
+        fileSaved = false;
+        updateFileSave();
+
+        return;
+      }
+      var opacity = $('#' + tabId + ' .writeIndicator');
+
+      opacity.css('opacity', 0);
+      fileSaved = true;
+      updateFileSave();
+
+      var fileExt = getFileExtension(filePath);
+
+      mode = parseMode(fileExt);
+    });
+  }
+}
+
+function toggleWidgets() {
+  if (widgetsShown) {
+    $('.widgetsContainer').css('display', 'none');
+    $('#widgetCheckbox').attr('checked', 'true');
+  } else {
+    $('.widgetsContainer').css('display', 'block');
+    $('#widgetCheckbox').attr('unchecked', 'false');
+  }
+
+  widgetsShown = !widgetsShown;
+}
+
+function hideExplorer() {
+  if (!explorerHidden) {
+    $('#resizableExplorer').animate(
+      {
+        width: '2px',
+      },
+      90,
+    );
+
+    explorerHidden = true;
+  } else {
+    $('#resizableExplorer').animate(
+      {
+        width: '215px',
+      },
+      90,
+    );
+
+    explorerHidden = false;
+  }
+}
 
 /********** ACE CONFIG **********/
 
-function findEditor(id,mode){
-	//console.log("finding the editor");
-    editor = ace.edit(id);
-	
-	if(mode==="js"){
-	   mode = "javascript";
-	}
-	if(mode==="ts"){
-		mode = "typescript";
-	}
-	if(mode==="py"){
-		mode = "python";
-	}
-	if(mode === "CPP"){
-		mode = 'cpp';
-	}
+function findEditor(id, mode) {
+  //console.log("finding the editor");
+  editor = ace.edit(id);
 
-	$("#"+id).on("contextmenu",function(event){
+  if (mode === 'js') {
+    mode = 'javascript';
+  }
+  if (mode === 'ts') {
+    mode = 'typescript';
+  }
+  if (mode === 'py') {
+    mode = 'python';
+  }
+  if (mode === 'CPP') {
+    mode = 'cpp';
+  }
 
-		contextMenuForEditor(event,id);
+  $('#' + id).on('contextmenu', function (event) {
+    contextMenuForEditor(event, id);
+  });
 
-	});	
+  aceConfig(editor, id, mode);
 
-	aceConfig(editor,id,mode);
-	
+  fs.readFile(jsonThemeFilePath, 'utf-8', function (e, data) {
+    var parseJson = JSON.parse(data);
 
-	fs.readFile(jsonThemeFilePath,"utf-8",function(e,data){
-
-	var parseJson = JSON.parse(data);
-
-	editor.setTheme(parseJson.currentTheme);
-
-	});
-
+    editor.setTheme(parseJson.currentTheme);
+  });
 }
 
-function aceConfig(editor,id,mode){
-		
-editor.getSession().on('change', function() {
+function aceConfig(editor, id, mode) {
+  editor.getSession().on('change', function () {
+    //dont add filesaved false here
 
-	//dont add filesaved false here
-	
-	var tabNum = id.split("_")[1];
-	var tabId = "tabId_"+tabNum;
+    var tabNum = id.split('_')[1];
+    var tabId = 'tabId_' + tabNum;
 
-	
-	var opacity = $("#"+tabId+" .writeIndicator");
-	
-	opacity.css("opacity",1);	
-	
-	characterLength = editor.session.getValue().length;
-});	
+    var opacity = $('#' + tabId + ' .writeIndicator');
 
+    opacity.css('opacity', 1);
 
-	 editor.session.setMode("../ace/mode/"+mode);
+    characterLength = editor.session.getValue().length;
+  });
 
-	
-     editor.setOptions({
-         enableBasicAutocompletion: true,
-         enableSnippets: true
-     });
- 
+  editor.session.setMode('../ace/mode/' + mode);
 
+  editor.setOptions({
+    enableBasicAutocompletion: true,
+    enableSnippets: true,
+  });
 
+  // pass options to ace.edit
 
+  //ace.createEditSession("string or array", "ace/mode/javascript")
 
-	// pass options to ace.edit
+  editor.session.markUndoGroup();
 
-//ace.createEditSession("string or array", "ace/mode/javascript")
-
-	
-editor.session.markUndoGroup(); 
-
-	editor.find('function',{
+  editor.find('function', {
     backwards: false,
     wrap: true,
     caseSensitive: true,
     wholeWord: false,
-    regExp: true
-});
+    regExp: true,
+  });
 
-	
-editor.findNext();
-editor.findPrevious();
+  editor.findNext();
+  editor.findPrevious();
 
-editor.focus();
-editor.setShowPrintMargin(false);
+  editor.focus();
+  editor.setShowPrintMargin(false);
 
-editor.getSession().setUseWrapMode(true)
-	
-	
+  editor.getSession().setUseWrapMode(true);
 }
-
-
 
 /******** jquery ********/
 
- $( function() {
-	 
-    $( "#resizableExplorer" ).resizable({
-		
-	  maxHeight: 200,
-      minWidth:2,
-      minHeight: 200,
-      handles: 'e'
-		
-	});
-	 
-	$(".explorerHeader").html("Current Files");
-	 
-
-	 $("#changeFolder").on("click",selectFolder);
-
-
-
-
-	 $("#syncFiles").on("click",syncFiles);
-
-	 $(".widgetsContainer span").on("click",toggleWidgets);
-
-	 $("body").on("click",function(){
-	 	hideMenu(menu);
-	 });
-
-	 if(widgetsShown){
-	 	$("#widgetCheckbox").attr("checked","true");
-	 }
-
+$(function () {
+  $('#resizableExplorer').resizable({
+    maxHeight: 200,
+    minWidth: 2,
+    minHeight: 200,
+    handles: 'e',
   });
 
+  $('.explorerHeader').html('Current Files');
 
- $(".exploredFilesContainer").scroll(function(){
+  $('#changeFolder').on('click', selectFolder);
 
- 	if(this.scrollTop > 8){
- 		//show shadow
- 		
- 		
- 		$(this).css("box-shadow","inset 0px 0px 5px rgba(0,0,0,0.5)");
+  $('#syncFiles').on('click', syncFiles);
 
+  $('.widgetsContainer span').on('click', toggleWidgets);
 
- 	}else{
- 		//hide shadow
-		
- 		$(this).css("box-shadow","inset 0px 0px 5px transparent");
- 	}
+  $('body').on('click', function () {
+    hideMenu(menu);
+  });
 
- });
+  if (widgetsShown) {
+    $('#widgetCheckbox').attr('checked', 'true');
+  }
+});
+
+$('.exploredFilesContainer').scroll(function () {
+  if (this.scrollTop > 8) {
+    //show shadow
+
+    $(this).css('box-shadow', 'inset 0px 0px 5px rgba(0,0,0,0.5)');
+  } else {
+    //hide shadow
+
+    $(this).css('box-shadow', 'inset 0px 0px 5px transparent');
+  }
+});

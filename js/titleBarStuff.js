@@ -1,31 +1,28 @@
 const remote = require('electron').remote;
 
-var quit = document.getElementById("quit");
-var minimise = document.getElementById("minimise");
-var maximise = document.getElementById("maximise");
+var quit = document.getElementById('quit');
+var minimise = document.getElementById('minimise');
+var maximise = document.getElementById('maximise');
 
+quit.addEventListener('click', closeWindow);
+minimise.addEventListener('click', minimiseWindow);
+maximise.addEventListener('click', maximiseWindow);
 
-quit.addEventListener("click",closeWindow);
-minimise.addEventListener("click",minimiseWindow);
-maximise.addEventListener("click",maximiseWindow);
-
-function closeWindow(){
-	 remote.getCurrentWindow().close()
+function closeWindow() {
+  remote.getCurrentWindow().close();
 }
 
-function minimiseWindow(){
-	remote.BrowserWindow.getFocusedWindow().minimize();
+function minimiseWindow() {
+  remote.BrowserWindow.getFocusedWindow().minimize();
 }
 
-function maximiseWindow(){
-
-	remote.BrowserWindow.getFocusedWindow().maximize();
-
+function maximiseWindow() {
+  remote.BrowserWindow.getFocusedWindow().maximize();
 }
 
-remote.getCurrentWindow().on('minimize', function() {
-	console.log("closed");
-  });
+remote.getCurrentWindow().on('minimize', function () {
+  //console.log("closed");
+});
 /*
   const { Menu, MenuItem } = remote
   

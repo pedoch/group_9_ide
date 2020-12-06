@@ -1,21 +1,16 @@
-const { app, BrowserWindow, Tray, Menu, globalShortcut} = require('electron')
+const { app, BrowserWindow, Tray, Menu, globalShortcut } = require('electron');
 const shell = require('electron').shell;
-const path = require("path");
+const path = require('path');
 const ipc = require('electron').ipcMain;
 const nativeImage = require('electron').nativeImage;
 
-
-
 const ipcRend = require('electron').ipcRenderer;
-
-
 
 let appIcon = nativeImage.createFromPath(path.join(__dirname, 'img', 'snippetSquare.png'));
 let win;
 let tray = null;
 
 function createWindow() {
-
   win = new BrowserWindow({
     width: 900,
     height: 800,
@@ -23,63 +18,56 @@ function createWindow() {
     minHeight: 650,
     minWidth: 600,
     icon: appIcon,
-    frame:false,
-    backgroundColor: "#16181A"
+    frame: false,
+    backgroundColor: '#16181A',
   });
 
-
-  ipc.on("themeValue", function (event, arg) {
-
-    win.webContents.send("getThemeValue", arg);
-    console.log(arg);
-
+  ipc.on('themeValue', function (event, arg) {
+    win.webContents.send('getThemeValue', arg);
   });
 
-  ipc.on("selectedThemeValue", function (event, arg) {
-    win.webContents.send("setThemeValue", arg);
-
+  ipc.on('selectedThemeValue', function (event, arg) {
+    win.webContents.send('setThemeValue', arg);
   });
 
+  win.loadFile('index.html');
 
-  win.loadFile('index.html')
-
-  win.on('closed', () => {
-
-  })
+  win.on('closed', () => {});
 
   win.on('ready-to-show', () => {
-
     win.show();
     win.focus();
-
-  })
-
+  });
 }
-
 
 app.on('ready', () => {
   createWindow();
-})
+});
 
 const template = [
   {
     label: 'File',
     submenu: [
       {
-         label: 'New File',
-         click () { win.webContents.send("newfile"); }
+        label: 'New File',
+        click() {
+          win.webContents.send('newfile');
+        },
       },
       {
-         label: 'New Folder',
-         click () { win.webContents.send("newfolder"); }          
+        label: 'New Folder',
+        click() {
+          win.webContents.send('newfolder');
+        },
       },
       { type: 'separator' },
       {
         label: 'Save',
-        click () { win.webContents.send("save"); }
-     },
-     
-    ]
+        click() {
+          win.webContents.send('save');
+        },
+      },
+    ],
   },
   {
     label: 'View',
@@ -92,26 +80,25 @@ const template = [
       { role: 'zoomin' },
       { role: 'zoomout' },
       { type: 'separator' },
-      { role: 'togglefullscreen' }
-    ]
+      { role: 'togglefullscreen' },
+    ],
   },
   {
     role: 'window',
-    submenu: [
-      { role: 'minimize' },
-      { role: 'close' }
-    ]
+    submenu: [{ role: 'minimize' }, { role: 'close' }],
   },
   {
     role: 'help',
     submenu: [
       {
         label: 'Learn More',
-        click () { require('electron').shell.openExternal('https://electronjs.org') }
-      }
-    ]
-  }
-]
+        click() {
+          require('electron').shell.openExternal('https://electronjs.org');
+        },
+      },
+    ],
+  },
+];
 
 if (process.platform === 'darwin') {
   template.unshift({
@@ -125,21 +112,18 @@ if (process.platform === 'darwin') {
       { role: 'hideothers' },
       { role: 'unhide' },
       { type: 'separator' },
-      { role: 'quit' }
-    ]
-  })
+      { role: 'quit' },
+    ],
+  });
 
   // Edit menu
   template[1].submenu.push(
     { type: 'separator' },
     {
       label: 'Speech',
-      submenu: [
-        { role: 'startspeaking' },
-        { role: 'stopspeaking' }
-      ]
-    }
-  )
+      submenu: [{ role: 'startspeaking' }, { role: 'stopspeaking' }],
+    },
+  );
 
   // Window menu
   template[3].submenu = [
@@ -147,27 +131,21 @@ if (process.platform === 'darwin') {
     { role: 'minimize' },
     { role: 'zoom' },
     { type: 'separator' },
-    { role: 'front' }
-  ]
+    { role: 'front' },
+  ];
 }
 
-const menu = Menu.buildFromTemplate(template)
+const menu = Menu.buildFromTemplate(template);
 Menu.setApplicationMenu(menu);
 
-
 app.on('window-all-closed', () => {
-
-
   if (process.platform !== 'darwin') {
-    app.quit()
-
+    app.quit();
   }
-})
+});
 
 app.on('activate', () => {
-
-
   if (win === null) {
-    createWindow()
+    createWindow();
   }
-})
+});

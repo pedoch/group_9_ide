@@ -1,0 +1,1 @@
+START cmd /K %2 %1
