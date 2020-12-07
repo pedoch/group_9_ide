@@ -57,7 +57,7 @@ body * {
 }
 
 .titleBarStyle {
-  background: #202327;
+  background: #7851a9;
   font-family: montserrat;
   color: #fff;
   font-size: 14pt;
@@ -128,7 +128,7 @@ li {
 .settingsContainer {
   overflow-x: hidden;
   overflow-y: scroll;
-  background: #2d3239;
+  background: #9a4eae;
   text-align: center;
 }
 
@@ -141,7 +141,7 @@ hr {
   height: 1px;
   margin-top: 18px;
   margin-bottom: 25px;
-  background: linear-gradient(90deg, #2d3239 9%, #fff, #2d3239 87%);
+  background: linear-gradient(90deg, #9a4eae 9%, #fff, #9a4eae 87%);
 }
 
 .themeGrid .row {
@@ -196,7 +196,7 @@ hr {
 }
 
 .bottomBlock {
-  background: #202327;
+  background: #7851a9;
   padding: 10px;
 }
 
@@ -205,7 +205,7 @@ hr {
   float: right;
   margin-left: 20px;
   padding: 10px;
-  background: #202327;
+  background: #7851a9;
   border: 0;
   color: #fff;
   font-family: montserrat;
@@ -217,7 +217,7 @@ hr {
 
 .cancel:hover,
 .ok:hover {
-  color: #202327;
+  color: #7851a9;
   background: #fff;
 }
 

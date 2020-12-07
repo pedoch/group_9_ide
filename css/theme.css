@@ -1,18 +1,17 @@
-body{
-	overflow:hidden;
-	padding:0;
-	margin:0;
+body {
+  overflow: hidden;
+  padding: 0;
+  margin: 0;
 }
 
-.mainContainerStyle{
-	background:#2D3239;
+.mainContainerStyle {
+  background: #9a4eae;
 }
 
-.featuresContainerStyle{
-	background: #16181A;
+.featuresContainerStyle {
+  background: #16181a;
 }
 
-.featuresBlockStyle{
-	background:#202327;
+.featuresBlockStyle {
+  background: #7851a9;
 }
-

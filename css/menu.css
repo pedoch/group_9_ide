@@ -20,7 +20,7 @@ ul.main-menu > li {
 }
 
 ul.main-menu > li.active-menu {
-  background-color: #121213;
+  background-color: #800080;
 }
 
 ul.main-menu ul li a {
@@ -47,7 +47,8 @@ ul.main-menu > li ul {
   border-width: 1px;
   border-style: solid;
   border-color: #59606b;
-  background-color: #121213;
+  /* background-color: #121213; */
+  background-color: #800080;
   -webkit-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
@@ -63,10 +64,11 @@ ul.main-menu li ul li {
   white-space: nowrap;
 }
 ul.main-menu li:hover {
-  background-color: #2d3239; /*#fef7cb;*/
+  /* background-color: #9a4eae;  */
+  background-color: #512888;
 }
 ul.main-menu li.active-menu:hover {
-  background-color: #121213;
+  background-color: #800080;
 }
 ul.main-menu li ul li.disabled,
 ul.main-menu li ul li.disabled:hover,
@@ -77,7 +79,7 @@ ul.main-menu li ul li.disabled a {
 }
 
 ul.main-menu li.separator {
-  border-top: 1px solid #2d3239;
+  border-top: 1px solid #9a4eae;
   margin-top: 5px;
   margin-bottom: 5px;
 }

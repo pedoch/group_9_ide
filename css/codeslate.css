@@ -1,5 +1,5 @@
 body {
-  /* background:url("../img/snippetsLogo.png") no-repeat #1c1f23;
+  /* background:url("../img/snippetsLogo.png") no-repeat #6C3082;
 	background-position:60% 50%; */
 }
 
@@ -49,7 +49,8 @@ body {
 
 .explorerContainerStyles,
 .widgetsContainerStyles {
-  background: #2d3239;
+  /* background: #2d3239; */
+  background: #9a4eae;
 }
 
 .ui-resizable-handle .ui-resizable-se .ui-icon .ui-icon-gripsmall-diagonal-se {
@@ -71,7 +72,8 @@ body {
 }
 
 .folderFiles {
-  background: #1c1f23;
+  /* background: #1c1f23; */
+  background: #6c3082;
   margin-top: 5px;
   margin-bottom: 5px;
   margin-left: 5px;
@@ -115,7 +117,7 @@ body {
 }
 
 #syncFiles:hover {
-  background: #262a2f;
+  background: #880085;
 }
 
 #changeFolder {
@@ -140,18 +142,19 @@ body {
 }
 
 .selectedFile {
-  background: #1c1f23;
+  background: #6c3082;
   margin-left: 10px;
   transition: margin 0.1s ease-in-out;
 }
 
 .filesContainer li.selectedFile:hover {
-  background: #1c1f23;
+  background: #6c3082;
 }
 
 .exploredFilesContainer li:hover,
 .filesContainer li:hover {
-  background: #262a2f;
+  /* background: #262a2f; */
+  background: #880085;
 }
 
 .editorContainer {
@@ -159,6 +162,7 @@ body {
   z-index: 5;
   display: grid;
   grid-template-rows: 1fr auto;
+  background-color: #6c3082;
 }
 
 .closeTabIcon {
@@ -363,7 +367,7 @@ body {
 }
 
 .codeStat {
-  border-top: 1px solid #2d3239;
+  border-top: 1px solid #9a4eae;
   font-size: 8pt;
   color: #fff;
   background: #141517;
@@ -376,7 +380,7 @@ body {
   float: right;
   width: fit-content;
   padding: 5px;
-  border-left: 1px solid #2d3239;
+  border-left: 1px solid #9a4eae;
 }
 
 .animateOpeneingTabs {
@@ -394,7 +398,7 @@ body {
   margin-left: -5px;
   margin-right: -3px;
   margin-bottom: 5px;
-  background: #1c1f23;
+  background: #6c3082;
 }
 
 .widgetsHeader span {
@@ -408,7 +412,7 @@ body {
 
 .widgetsHeader span:hover {
   background: #fff;
-  color: #1c1f23;
+  color: #6c3082;
 }
 
 .loadingFolders {
@@ -465,7 +469,7 @@ body {
   color: #fff;
   font-size: 15px;
   border-radius: 2px;
-  background: #2d3239;
+  background: #9a4eae;
   display: none;
 }
 
@@ -474,7 +478,7 @@ body {
   outline: 0;
   display: block;
   padding: 10px;
-  background: #1c1f23;
+  background: #6c3082;
   border: 0;
   box-shadow: inset 0px 1.5px 1px rgba(0, 0, 0, 0.6);
   font-family: montserrat;
